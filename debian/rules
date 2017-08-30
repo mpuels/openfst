@@ -1,0 +1,105 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_CFLAGS_MAINT_APPEND = -Wall
+include /usr/share/dpkg/buildflags.mk
+
+DEB_BUILD_PARALLEL := 1
+ifneq "$(filter parallel=%,$(DEB_BUILD_OPTIONS))" ""
+	njobs_requested := $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	# Artificially limit parallelism in order not to run out of RAM.
+	mem_total := $(shell grep MemTotal /proc/meminfo | tr -s ' ' | cut -d' ' -f2)
+	njobs_max := $(patsubst 0,1,$(shell echo $$(( $(mem_total) / 2000000 ))))
+	DEB_PARALLEL_JOBS_BUILD := $(shell echo $$(( $(njobs_requested) > $(njobs_max) ? $(njobs_max) : $(njobs_requested) )))
+	# Compiling the test suite requires more RAM than compiling the library.
+	njobs_max_check := $(patsubst 0,1,$(shell echo $$(( $(mem_total) / 3500000 ))))
+	DEB_PARALLEL_JOBS_CHECK := $(shell echo $$(( $(njobs_requested) > $(njobs_max_check) ? $(njobs_max_check) : $(njobs_requested) )))
+	# Disable CDBS handling of parallel building.
+	DEB_MAKE_PARALLEL :=
+	# Manually handle parallelism.
+	DEB_MAKE_PARALLEL_JOBS_CHECK_ARGS := -j$(DEB_PARALLEL_JOBS_CHECK)
+	DEB_MAKE_PARALLEL_JOBS_BUILD_ARGS := -j$(DEB_PARALLEL_JOBS_BUILD)
+	DEB_MAKE_BUILD_TARGET = $(DEB_MAKE_PARALLEL_JOBS_BUILD_ARGS)
+endif
+
+DEB_MAKE_CHECK_TARGET := $(DEB_MAKE_PARALLEL_JOBS_CHECK_ARGS) check TMPDIR=$(CURDIR)/tmpdir
+ifneq "$(filter hurd-i386 kfreebsd-i386,$(DEB_HOST_ARCH))" ""
+DEB_MAKE_CHECK_TARGET += CXXFLAGS="$(CXXFLAGS:-O%=-O0) -std=c++11"
+endif
+ifneq "$(filter mips mipsel,$(DEB_HOST_ARCH))" ""
+DEB_MAKE_CHECK_TARGET += CXXFLAGS="$(CXXFLAGS:-O%=-O0) -std=c++11 -mxgot"
+endif
+DEB_INSTALL_CHANGELOGS_ALL := NEWS
+DEB_INSTALL_DOCS_ALL := AUTHORS README debian/README.Debian
+DEB_DH_MAKESHLIBS_ARGS_ALL := -X usr/lib/fst -V -- -t
+
+include /usr/share/cdbs/1/rules/upstream-tarball.mk
+include /usr/share/cdbs/1/rules/utils.mk
+include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+
+DEB_TAR_SRCDIR := .
+
+DEB_AUTO_UPDATE_LIBTOOL = pre
+DEB_AUTO_UPDATE_ACLOCAL = ,
+DEB_AUTO_UPDATE_AUTOMAKE = ,
+DEB_AUTOMAKE_ARGS = --foreign --add-missing --copy
+DEB_AUTO_UPDATE_AUTOCONF = 2.69
+
+DEB_CONFIGURE_USER_FLAGS = --enable-far --enable-pdt --enable-lookahead-fsts --enable-ngram-fsts --enable-const-fsts --enable-compact-fsts --enable-compress --enable-linear-fsts --enable-mpdt --enable-bin --enable-static --with-libfstdir=/usr/lib/fst/8
+
+
+DEB_COPYRIGHT_CHECK_IGNORE_REGEX := ^debian/(changelog|copyright(|_hints|_newhints)|.*/usr/(bin|lib)/.*)|src/(.*\.(o|lo|a|la|so|backup)|src/.*/.libs/.*)$$
+
+BACKUP=configure aclocal.m4 config.h.in \
+	compile \
+	depcomp \
+	missing \
+	src/include/fst/config.h \
+	ltmain.sh m4/libtool.m4 m4/ltoptions.m4 m4/ltversion.m4 m4/lt~obsolete.m4 m4/ltsugar.m4 \
+	src/bin/Makefile.in \
+	src/lib/Makefile.in \
+	src/test/Makefile.in \
+	src/Makefile.in \
+	src/script/Makefile.in \
+	src/extensions/far/Makefile.in \
+	src/extensions/pdt/Makefile.in \
+	src/extensions/compact/Makefile.in \
+	src/extensions/const/Makefile.in \
+	src/extensions/ngram/Makefile.in \
+	src/extensions/Makefile.in \
+	src/extensions/lookahead/Makefile.in \
+	src/extensions/compress/Makefile.in \
+	src/extensions/linear/Makefile.in \
+	src/extensions/mpdt/Makefile.in \
+	src/extensions/python/Makefile.in \
+	src/extensions/special/Makefile.in \
+	src/include/Makefile.in \
+	debian/addons/openfstbc/openfstbc \
+	Makefile.in
+
+pre-build::
+	# Backup files expected to be modified.
+	set -e ; for i in $(BACKUP); do \
+		if [ ! -f "$$i".backup ]; then cp -a "$$i" "$$i".backup; fi ; \
+	done
+	mkdir -p debian/manpages_files
+	mkdir -p tmpdir
+	set -e ; for i in debian/addons/man/*.1; do \
+		sed -e 's/@DATE@/Feb 2016/g' -e 's/@VERSION@/1.5.1/g' $$i > debian/manpages_files/$$(basename $$i) ; \
+	done
+	cd debian/addons/openfstbc/ && ( ( cat makebcforofst.py ; echo print header) | python - 2>/dev/null ; cat openfstbc.backup ) > openfstbc
+
+clean::
+	set -e ; for i in $(BACKUP); do \
+		if [ -f "$$i".backup ]; then mv -f "$$i".backup "$$i"; fi ; \
+	done
+	$(RM) -r debian/manpages_files
+	$(RM) -r tmpdir
+
+binary-post-install/libfst-tools::
+	dh_bash-completion -p$(cdbs_curpkg)
+
+# Needed by upstream build process
+CDBS_BUILD_DEPENDS += , debhelper (>= 9~), dpkg-dev (>= 1.16.1~), zlib1g-dev, python, bash-completion
+

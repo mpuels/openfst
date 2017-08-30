@@ -1,0 +1,3 @@
+usr/lib/libfst*.so
+usr/lib/libfst*.a
+usr/include/

@@ -1,0 +1,48 @@
+Building this package for Debian
+--------------------------------
+
+This source package need no special handling for normal package builds.
+
+
+Maintaining packaging build routines
+------------------------------------
+
+This source package wraps debhelper commands and other parts of
+the build routines using the CDBS framework.  Please refer to the actual
+makefile snippets included from debian/rules for details on their
+purpose and ways to override defaults.
+
+
+Developing this package for Debian
+----------------------------------
+
+The source of this package is developed using git and the helper tool
+git-buildpackage, with all official releases tagged and signed and
+binary diffs of tarballs stored using pristine-tar.  This is documented
+below /usr/share/doc/git-buildpackage/manual-html/ .
+
+Setting DEB_MAINTAINER_MODE=1 enables additional build routines helpful
+during development of the package, but unfit for normal builds. This
+typically includes the CDBS feature of auto-updating debian/control with
+CDBS-related build-dependencies, which is forbidden by Debian Policy as
+generating build-dependencies without human intervention is potentially
+harmful and should not change automated builds (see
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=311724).
+
+Patches naming convention
+-------------------------
+
+This package uses special naming convention for patches. A leading number
+should be present to indicate:
+
+ 0xxx: grabbed from upstream
+ 1xxx: interesting for submission upstream
+ 2xxx: Debian-specific
+
+The xxx part of the number is just a sequence number barely related to
+the chronological order of patch addition: its main purpose is to
+be able to distinguish patches with similar names and goals.
+The leading number is not related to the order in which the patches
+are applied (look at the series file for that information).
+
+ -- Giulio Paci <giuliopaci@gmail.com>  Mon, 07 Mar 2016 07:47:05 +0100

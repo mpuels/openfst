@@ -1,0 +1,4 @@
+# CDBS automatically generate copyright_newhints that is compared
+# with automatically pre-generated copyright_hints for changes. It is
+# normal to have placeholders in this file.
+openfst source: file-contains-fixme-placeholder debian/copyright_hints:*

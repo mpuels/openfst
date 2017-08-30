@@ -1,0 +1,20 @@
+# The libraries have been built with proper hardening options, so
+# probably they do not use any possible unfortified function.
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact16_acceptor-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact16_string-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact16_unweighted-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact16_unweighted_acceptor-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact16_weighted_string-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact64_acceptor-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact64_string-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact64_unweighted-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact64_unweighted_acceptor-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact64_weighted_string-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact8_acceptor-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact8_string-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact8_unweighted-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact8_unweighted_acceptor-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/compact8_weighted_string-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/const16-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/const64-fst.so.0.0.0
+libfst8-plugins-base binary: hardening-no-fortify-functions usr/lib/fst/8/const8-fst.so.0.0.0
