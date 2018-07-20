@@ -1,0 +1,6 @@
+# The libraries have been built with proper hardening options, so
+# probably they do not use any possible unfortified function.
+libfst10 binary: hardening-no-fortify-functions usr/lib/libfst.so.10.0.0
+libfst10 binary: hardening-no-fortify-functions usr/lib/libfstfarscript.so.10.0.0
+libfst10 binary: hardening-no-fortify-functions usr/lib/libfstcompact.so.10.0.0
+libfst10 binary: hardening-no-fortify-functions usr/lib/libfstconst.so.10.0.0

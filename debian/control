@@ -21,7 +21,7 @@ Homepage: http://www.openfst.org/
 Package: libfst-tools
 Section: text
 Architecture: any
-Depends: libfst8 (= ${binary:Version}),
+Depends: libfst10 (= ${binary:Version}),
 	 ${misc:Depends},
 	 ${shlibs:Depends}
 Description: weighted finite-state transducers library (tools)
@@ -37,10 +37,10 @@ Description: weighted finite-state transducers library (tools)
  .
  This package provides the command line tools.
 
-Package: libfst8-plugins-base
+Package: libfst10-plugins-base
 Section: text
 Architecture: any
-Depends: libfst8 (= ${binary:Version}),
+Depends: libfst10 (= ${binary:Version}),
 	 ${misc:Depends},
 	 ${shlibs:Depends}
 Description: weighted finite-state transducers library (base plugins)
@@ -54,7 +54,7 @@ Description: weighted finite-state transducers library (base plugins)
 Package: libfst-dev
 Section: libdevel
 Architecture: any
-Depends: libfst8 (= ${binary:Version}),
+Depends: libfst10 (= ${binary:Version}),
          ${misc:Depends}
 Description: weighted finite-state transducers library (development)
  OpenFst is a library for constructing, combining, optimizing, and searching
@@ -69,7 +69,7 @@ Description: weighted finite-state transducers library (development)
  .
  This package contains the development support files.
 
-Package: libfst8
+Package: libfst10
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Breaks: libfst-tools (<< 1.2)

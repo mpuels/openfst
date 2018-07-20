@@ -46,7 +46,7 @@ DEB_AUTO_UPDATE_AUTOMAKE = ,
 DEB_AUTOMAKE_ARGS = --foreign --add-missing --copy
 DEB_AUTO_UPDATE_AUTOCONF = 2.69
 
-DEB_CONFIGURE_USER_FLAGS = --enable-far --enable-pdt --enable-lookahead-fsts --enable-ngram-fsts --enable-const-fsts --enable-compact-fsts --enable-compress --enable-linear-fsts --enable-mpdt --enable-bin --enable-static --with-libfstdir=/usr/lib/fst/8
+DEB_CONFIGURE_USER_FLAGS = --enable-far --enable-pdt --enable-lookahead-fsts --enable-ngram-fsts --enable-const-fsts --enable-compact-fsts --enable-compress --enable-linear-fsts --enable-mpdt --enable-bin --enable-static --with-libfstdir=/usr/lib/fst/10
 
 
 DEB_COPYRIGHT_CHECK_IGNORE_REGEX := ^debian/(changelog|copyright(|_hints|_newhints)|.*/usr/(bin|lib)/.*)|src/(.*\.(o|lo|a|la|so|backup)|src/.*/.libs/.*)$$
