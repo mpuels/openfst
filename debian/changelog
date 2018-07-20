@@ -1,3 +1,13 @@
+openfst (1.6.7-1) xenial; urgency=medium
+
+  [ Marc Püls ]
+  * Imported Upstream version 1.6.7
+  * Rename libfst8* packages into libfst10* according to SONAME change.
+
+  [ Marc Puels ]
+
+ -- Marc Puels <mpuels@gmail.com>  Fri, 20 Jul 2018 16:30:21 +0200
+
 openfst (1.6.3-2) unstable; urgency=medium
 
   * Disable compilation optimizations for the test suite on kfreebsd-i386
